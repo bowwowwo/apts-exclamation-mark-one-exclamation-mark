@@ -175,7 +175,12 @@ public:
     void callAll(string line)
     {
         CreateArray(line);
+        if (arrSize == 0) return;
+
         charLinkedList();
+
+        if (head == nullptr) return;
+
         head = sortAlphabet(head);
         reverseArray();
     }
@@ -251,12 +256,9 @@ public:
         slow->next = nullptr;
         return temp;
     }
-    node *merge(node *first, node *second)
-    {
-        if (!first)
-            return second;
-        if (!second)
-            return first;
+    node* merge(node* first, node* second){
+        if (!first) return second;
+        if (!second) return first;
 
         node *result = nullptr;
 
