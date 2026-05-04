@@ -36,9 +36,12 @@ public:
     }
     void CreateArray(string line)
     {
+        delete[] arr;
+        arr = nullptr;
         arrSize = getWordNr(line);
         if (arrSize == 0)
             return;
+
         arr = new string[arrSize];
 
         string word = "";
@@ -78,7 +81,7 @@ public:
     }
     char getFirstChar(string s)
     {
-        return s[0];
+        return s.empty() ? '\0' : s[0];
     }
     int getWordNr(string line)
     {
@@ -117,6 +120,9 @@ public:
         {
             c = getFirstChar(tolower(arr[i]));
 
+            if (c == '\0')
+                continue;
+
             bool exists = false;
             for (char d : prev)
             {
@@ -138,8 +144,8 @@ public:
             {
                 if (c == getFirstChar(tolower(arr[j])))
                 {
-                    arr2[k] = arr[j];
-                    k++;
+                    if (k < count)
+                        arr2[k++] = arr[j];
                 }
             }
 
@@ -164,7 +170,7 @@ public:
         char c1;
         for (int i = 0; i < arrSize; i++)
         {
-            c1 = getFirstChar(arr[i]);
+            c1 = getFirstChar(tolower(arr[i]));
             if (c == c1)
                 count++;
         }
@@ -229,35 +235,31 @@ public:
 
     node *sortAlphabet(node *pp)
     {
-        /// merge sort mans milotais
         if (pp == nullptr || pp->next == nullptr)
             return pp;
 
         node *second = split(pp);
-
         pp = sortAlphabet(pp);
         second = sortAlphabet(second);
-
         return merge(pp, second);
     }
-
     // merge sort
     node *split(node *pp)
     {
         node *fast = pp;
         node *slow = pp;
+
         while (fast != nullptr && fast->next != nullptr)
         {
             fast = fast->next->next;
             if (fast != nullptr)
-            {
                 slow = slow->next;
-            }
         }
         node *temp = slow->next;
         slow->next = nullptr;
         return temp;
     }
+
     node *merge(node *first, node *second)
     {
         if (!first)
@@ -265,20 +267,16 @@ public:
         if (!second)
             return first;
 
-        node *result = nullptr;
-
         if (first->letter < second->letter)
         {
-            result = first;
-            result->next = merge(first->next, second);
+            first->next = merge(first->next, second);
+            return first;
         }
         else
         {
-            result = second;
-            result->next = merge(first, second->next);
+            second->next = merge(first, second->next);
+            return second;
         }
-
-        return result;
     }
 
     // atmina
