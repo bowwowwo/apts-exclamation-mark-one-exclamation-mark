@@ -175,11 +175,13 @@ public:
     void callAll(string line)
     {
         CreateArray(line);
-        if (arrSize == 0) return;
+        if (arrSize == 0)
+            return;
 
         charLinkedList();
 
-        if (head == nullptr) return;
+        if (head == nullptr)
+            return;
 
         head = sortAlphabet(head);
         reverseArray();
@@ -256,9 +258,12 @@ public:
         slow->next = nullptr;
         return temp;
     }
-    node* merge(node* first, node* second){
-        if (!first) return second;
-        if (!second) return first;
+    node *merge(node *first, node *second)
+    {
+        if (!first)
+            return second;
+        if (!second)
+            return first;
 
         node *result = nullptr;
 
@@ -294,32 +299,32 @@ public:
 
 int main()
 {
-
     pastins p;
-
-    string fName = "post.in.txt";
-    string line;
-
-    ifstream fin(fName);
-    ofstream fout("post.out.txt");
+    std::string fName = "post.in.txt";
+    std::ifstream fin(fName);
+    std::ofstream fout("post.out.txt");
 
     if (!fin)
     {
-        cout << "nevar atvērt failu " << fName << endl;
+        std::cerr << "nevar atvērt failu " << fName << '\n';
+        return 1;
+    }
+    if (!fout)
+    {
+        std::cerr << "nevar izveidot post.out.txt\n";
         return 1;
     }
 
-    if (!getline(fin, line))
+    std::string line;
+    bool any = false;
+    while (std::getline(fin, line))
     {
-        fout << "nothing" << endl;
-        return 0;
+        any = true;
+        fout << p.formatOutput(line) << '\n';
     }
-
-    while (getline(fin, line))
+    if (!any)
     {
-        fout << p.formatOutput(line) << endl;
+        std::cerr << "input file is empty\n";
+        fout << "nothing\n";
     }
-
-    fin.close();
-    fout.close();
 }
