@@ -298,9 +298,9 @@ public:
 int main()
 {
     pastins p;
-    std::string fName = "post.in.txt";
+    std::string fName = "post.in";
     std::ifstream fin(fName);
-    std::ofstream fout("post.out.txt");
+    std::ofstream fout("post.out");
 
     if (!fin)
     {
